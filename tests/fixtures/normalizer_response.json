@@ -1,0 +1,24 @@
+{
+  "structured_output": {
+    "title": "Vue 2 Migration Readiness Audit",
+    "one_liner": "A fixed-fee audit that estimates the cost and risk of migrating a Vue 2 codebase to Vue 3.",
+    "target_customer": "Engineering managers at 20-200 person companies still running Vue 2 in production",
+    "buyer": "VP Engineering or CTO",
+    "job_to_be_done": "Decide whether, when and at what cost to migrate off end-of-life Vue 2.",
+    "current_workaround": "A senior engineer spends a week guessing at an estimate, or the migration is postponed.",
+    "riskiest_assumptions": [
+      "Companies will pay a third party for an estimate instead of doing it in-house.",
+      "A fixed-fee audit can be delivered in under a week of effort.",
+      "Audit buyers convert into migration contract buyers."
+    ],
+    "search_keywords": ["vue 2 to vue 3 migration cost", "vue 2 end of life audit", "vue migration consultant"],
+    "adjacent_markets": ["AngularJS migration", "React class component modernization"],
+    "geography": "global"
+  },
+  "text": null,
+  "usd": 0.0123,
+  "input_tokens": 910,
+  "output_tokens": 340,
+  "model": "claude-opus-5-5",
+  "messages": [{"role": "assistant", "model": "claude-opus-5-5", "text": "{...recorded...}"}]
+}
