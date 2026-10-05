@@ -1,0 +1,30 @@
+# Copy to ideagate.yaml and adjust. Secrets go in .env, never here.
+models:
+  strong: claude-opus-5-5     # normalizer, skeptic, scorer, planning
+  cheap: claude-haiku-4-5     # bulk research and extraction
+budgets:
+  run_usd_max: 3.00           # starting placeholder; tune after the first five runs
+  stage_usd_max: 0.75
+  stage_timeout_s: 600
+rubric:
+  weights: {moat: 1.0, competition: 1.0, proof_of_spending: 2.0,
+            time_to_v1: 1.0, time_to_market: 0.75,
+            projected_revenue: 1.5, amended_version: 0.75}
+  pursue_min_score: 3.5
+  kill_max_score: 2.5
+  min_spend_verdict_for_pursue: moderate
+planning:
+  weekly_hours: 15
+  sprint_weeks: 2
+  commitment_targets: {high_paying: 4, medium_paying: 20}
+search:
+  provider: exa
+  cache_ttl_days: 14
+sources:
+  blocklist: []
+  per_domain_rps: 1
+paths:
+  db: ideagate.db
+  reports_dir: reports
+duplicates:
+  similarity_threshold: 0.6   # M1 uses text similarity; embeddings arrive in M5

@@ -1,0 +1,39 @@
+# --- Secrets and local config (each user makes their own from the .example files) ---
+.env
+.env.*
+!.env.example
+ideagate.yaml
+
+# --- Runtime data ---
+*.db
+*.sqlite
+reports/*
+!reports/.gitkeep
+
+# --- Python / tooling ---
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- AI-assistant and project-management meta (not needed by anyone using the code) ---
+.claude/
+CLAUDE.md
+.worktrees/
+# build-plan PDFs and similar planning docs
+*.pdf
+# personal idea backlog used to seed the golden set
+evals/ideastack_source.md
+
+# --- Editors and OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
