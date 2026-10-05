@@ -3,6 +3,10 @@
 Newest first. Every change set gets a version here (patch for fixes and docs, minor for a milestone or feature,
 major for breaking changes), mirrored in `pyproject.toml` and as a git tag `vX.Y.Z`.
 
+## v0.0.2 - 2026-10-05 - Connect to GitHub (main)
+- Merged the placeholder "Initial commit" from the new GitHub repo into local history (unrelated histories); kept our README.
+- Added `origin` remote; `main`, `feature/module-1` and tags pushed.
+
 ## v0.0.1 - 2026-10-05 - Project scaffolding (main)
 - Packaging: `pyproject.toml` (Python 3.12, uv, Typer, Pydantic v2, SQLModel, Agent SDK) and `uv.lock`.
 - Config templates: `ideagate.yaml.example`, `.env.example` (real `ideagate.yaml` and `.env` stay local).
