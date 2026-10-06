@@ -13,6 +13,7 @@ major for breaking changes), mirrored in `pyproject.toml` and as a git tag `vX.Y
 - CLI: `run`, `resume`, `show`.
 - 15 offline tests (config, schemas, prompts, orchestrator resume, normalizer fixture, CLI).
 - Merged `main` (CI, ruff config) in; fixed ruff lint and format issues so the new PR checks pass.
+- README: PR check commands and policy; DECISIONS: lint, PR gate and network-blocked test decisions.
 
 ## v0.0.3 - 2026-10-05 - PR checks (main)
 - Added GitHub Actions CI for PRs to `main`: lockfile check, ruff lint and format, pytest with network blocked and API keys empty, package build, gitleaks secret scan.

@@ -21,3 +21,6 @@ Where the plan was ambiguous or the user chose, newest milestone last.
 - **Stages are synchronous**; the runner wraps the SDK's async `query()` with `asyncio.run`. M2 will run the four research agents concurrently with `asyncio.gather` over an async variant.
 - **`stage_usd_max` and `stage_timeout_s` are already passed to the SDK** (`max_budget_usd`, a timeout). Full budget-stop handling with partial output remains M3.
 - **Resume is by stage checkpoint.** A killed process loses at most the stage that was in flight.
+- **Lint and format with ruff** (rules E, F, I, B, UP; line length 110), enforced in CI. The M1 code was cleaned to pass before merge; `run_structured` keeps its `TypeVar` with a `noqa: UP047` rather than switching to PEP 695 syntax mid-module.
+- **PR gate on `main`:** CI jobs `checks` (lockfile, ruff, offline pytest with sockets disabled, build), `pr-hygiene` (`scripts/check_pr.py`: version bump, `releases.md` match, no attribution trailers) and `secrets` (gitleaks), all required by a GitHub ruleset. Squash merges only; the release tag is re-pointed at the squash commit after merging.
+- **Tests are network-blocked in CI** (`pytest-socket`) so a test can never spend money by accident; real-API checks, if any, will be separate and manual.
