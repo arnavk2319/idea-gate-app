@@ -4,8 +4,7 @@ Usage: python scripts/check_pr.py <base-ref>   (e.g. origin/main)
 
 Checks:
   1. pyproject.toml version is higher than on the base branch.
-  2. The newest releases.md entry matches that version.
-  3. No commit in base..HEAD carries an attribution trailer.
+  2. No commit in base..HEAD carries an attribution trailer.
 """
 
 import re
@@ -33,12 +32,6 @@ def main(base: str) -> int:
     if parse(head_version) <= parse(base_version):
         errors.append(f"version {head_version} must be higher than {base} ({base_version})")
 
-    with open("releases.md", encoding="utf-8") as f:
-        first = re.search(r"^## v(\S+)", f.read(), re.MULTILINE)
-    if not first or first.group(1) != head_version:
-        got = first.group(1) if first else "none"
-        errors.append(f"top releases.md entry is v{got}, expected v{head_version}")
-
     for line in git("log", "--format=%h %B", f"{base}..HEAD").splitlines():
         if TRAILER.search(line):
             errors.append(f"attribution trailer in commit message: {line.strip()}")
@@ -46,7 +39,7 @@ def main(base: str) -> int:
     for e in errors:
         print(f"FAIL: {e}")
     if not errors:
-        print(f"OK: version {head_version}, releases.md and commit messages look right")
+        print(f"OK: version {head_version} and commit messages look right")
     return 1 if errors else 0
 
 

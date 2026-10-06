@@ -37,3 +37,7 @@ evals/ideastack_source.md
 .vscode/
 *.swp
 .DS_Store
+
+# Local project notes (kept on disk, not published)
+DECISIONS.md
+releases.md

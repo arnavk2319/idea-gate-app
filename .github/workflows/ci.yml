@@ -63,7 +63,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Version bump, releases.md and commit trailers
+      - name: Version bump and commit trailers
         run: python scripts/check_pr.py origin/${{ github.base_ref }}
 
   secrets:

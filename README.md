@@ -1,6 +1,6 @@
 # IdeaGate
 
-Takes a one-line product idea and returns a sourced verdict (Kill, Amend or Pursue). Proof of spending first, pre-sell second, build only after commitments. See `DECISIONS.md` for choices made along the way.
+Takes a one-line product idea and returns a sourced verdict (Kill, Amend or Pursue). Proof of spending first, pre-sell second, build only after commitments.
 
 **Status: M1 (skeleton and normalizer).** `run`, `resume` and `show` work; the pipeline currently ends after Stage 0 (idea to brief).
 
