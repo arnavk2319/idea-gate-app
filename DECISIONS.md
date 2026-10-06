@@ -24,3 +24,14 @@ Where the plan was ambiguous or the user chose, newest milestone last.
 - **Lint and format with ruff** (rules E, F, I, B, UP; line length 110), enforced in CI. The M1 code was cleaned to pass before merge; `run_structured` keeps its `TypeVar` with a `noqa: UP047` rather than switching to PEP 695 syntax mid-module.
 - **PR gate on `main`:** CI jobs `checks` (lockfile, ruff, offline pytest with sockets disabled, build), `pr-hygiene` (`scripts/check_pr.py`: version bump, `releases.md` match, no attribution trailers) and `secrets` (gitleaks), all required by a GitHub ruleset. Squash merges only; the release tag is re-pointed at the squash commit after merging.
 - **Tests are network-blocked in CI** (`pytest-socket`) so a test can never spend money by accident; real-API checks, if any, will be separate and manual.
+
+## Development workflow
+Run these before opening a PR; CI runs the same checks on every PR to `main`.
+```bash
+python3.12 -m uv lock --check          # lockfile matches pyproject.toml
+python3.12 -m uv run ruff check .      # lint
+python3.12 -m uv run ruff format --check .
+python3.12 -m uv run pytest --disable-socket --allow-unix-socket   # offline, no paid API calls
+python3.12 scripts/check_pr.py origin/main   # version bumped, releases.md entry, no attribution trailers
+```
+Every PR bumps `version` in `pyproject.toml` and adds a matching top entry to `releases.md`. `main` is protected by a ruleset requiring the CI jobs above.
