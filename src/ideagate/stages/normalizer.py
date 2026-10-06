@@ -1,4 +1,5 @@
 """Stage 0: raw idea -> IdeaBrief, plus near-duplicate flags against past ideas."""
+
 from __future__ import annotations
 
 from difflib import SequenceMatcher
@@ -22,7 +23,11 @@ def find_duplicates(ctx: RunContext, one_liner: str) -> list[DuplicateFlag]:
     for past in ctx.repo.past_ideas(exclude_idea_id=ctx.idea_id):
         score = _similarity(one_liner, past.one_liner)
         if score >= threshold:
-            flags.append(DuplicateFlag(idea_id=past.id, title=past.title, one_liner=past.one_liner, similarity=round(score, 3)))
+            flags.append(
+                DuplicateFlag(
+                    idea_id=past.id, title=past.title, one_liner=past.one_liner, similarity=round(score, 3)
+                )
+            )
     return sorted(flags, key=lambda f: -f.similarity)
 
 

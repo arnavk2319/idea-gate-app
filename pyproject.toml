@@ -17,7 +17,7 @@ dependencies = [
 ideagate = "ideagate.cli:app"
 
 [dependency-groups]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "pytest-socket>=0.7", "ruff>=0.6"]
 
 [build-system]
 requires = ["hatchling"]
@@ -29,3 +29,10 @@ packages = ["src/ideagate"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

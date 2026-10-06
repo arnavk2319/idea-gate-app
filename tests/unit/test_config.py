@@ -20,7 +20,9 @@ def test_example_config_loads(config):
 
 def test_placeholder_model_rejected(tmp_path):
     with pytest.raises(ConfigError):
-        load_config(_write(tmp_path, lambda r: r["models"].update(strong="<set from current Anthropic model list>")))
+        load_config(
+            _write(tmp_path, lambda r: r["models"].update(strong="<set from current Anthropic model list>"))
+        )
 
 
 def test_missing_rubric_column_rejected(tmp_path):

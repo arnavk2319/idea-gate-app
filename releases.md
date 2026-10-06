@@ -12,6 +12,17 @@ major for breaking changes), mirrored in `pyproject.toml` and as a git tag `vX.Y
 - Orchestrator with per-stage checkpoints and `resume`; JSON-lines run logs.
 - CLI: `run`, `resume`, `show`.
 - 15 offline tests (config, schemas, prompts, orchestrator resume, normalizer fixture, CLI).
+- Merged `main` (CI, ruff config) in; fixed ruff lint and format issues so the new PR checks pass.
+
+## v0.0.3 - 2026-10-05 - PR checks (main)
+- Added GitHub Actions CI for PRs to `main`: lockfile check, ruff lint and format, pytest with network blocked and API keys empty, package build, gitleaks secret scan.
+- Added `scripts/check_pr.py`: version must be bumped, newest `releases.md` entry must match, no attribution trailers in commits.
+- Added PR template checklist; added `ruff` and `pytest-socket` dev dependencies and ruff config.
+- Branch protection rules still need to be enabled in GitHub settings.
+
+## v0.0.2 - 2026-10-05 - Connect to GitHub (main)
+- Merged the placeholder "Initial commit" from the new GitHub repo into local history (unrelated histories); kept our README.
+- Added `origin` remote; `main`, `feature/module-1` and tags pushed.
 
 ## v0.0.1 - 2026-10-05 - Project scaffolding (main)
 - Packaging: `pyproject.toml` (Python 3.12, uv, Typer, Pydantic v2, SQLModel, Agent SDK) and `uv.lock`.

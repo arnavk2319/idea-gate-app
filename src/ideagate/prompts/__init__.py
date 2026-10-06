@@ -1,4 +1,5 @@
 """Prompt loader. Prompts live as .md files with a version header; they are never inlined in Python."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -32,4 +33,9 @@ def load_prompt(name: str) -> Prompt:
     for key in ("stage", "version", "output_schema"):
         if key not in meta:
             raise ValueError(f"prompt {name} header is missing '{key}'")
-    return Prompt(stage=meta["stage"], version=str(meta["version"]), output_schema=meta["output_schema"], body=body.strip())
+    return Prompt(
+        stage=meta["stage"],
+        version=str(meta["version"]),
+        output_schema=meta["output_schema"],
+        body=body.strip(),
+    )

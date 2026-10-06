@@ -1,4 +1,5 @@
 """Checkpoint/resume: a crash after one stage must not redo that stage."""
+
 import pytest
 from pydantic import BaseModel
 
@@ -29,7 +30,9 @@ def _build(counter, fail_second_once):
             raise RuntimeError("network down")
         return Out(n=2)
 
-    build = lambda run_input, outs: In(**run_input)
+    def build(run_input, outs):
+        return In(**run_input)
+
     return [StageSpec("first", first, build, Out), StageSpec("second", second, build, Out)]
 
 

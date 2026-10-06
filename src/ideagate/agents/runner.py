@@ -3,12 +3,14 @@
 Agents get read-only tools only (and in M1, none at all). The SDK backend is injectable so
 tests run offline against recorded fixtures.
 """
+
 from __future__ import annotations
 
 import asyncio
 import time
+from collections.abc import Awaitable
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable, Protocol, TypeVar
+from typing import Any, Protocol, TypeVar
 
 from pydantic import BaseModel
 
@@ -125,8 +127,8 @@ def get_backend() -> Backend:
     return _backend
 
 
-def run_structured(
-    ctx: "RunContext",  # noqa: F821  (defined in pipeline.context; avoids a circular import)
+def run_structured(  # noqa: UP047  (keep TypeVar T; PEP 695 syntax would diverge from the rest of the module)
+    ctx: RunContext,  # noqa: F821  (defined in pipeline.context; avoids a circular import)
     *,
     agent: str,
     prompt: Prompt,
@@ -157,8 +159,21 @@ def run_structured(
     )
     duration = time.monotonic() - start
 
-    ctx.record_cost(agent=agent, model=raw.model, input_tokens=raw.input_tokens, output_tokens=raw.output_tokens, usd=raw.usd)
-    ctx.trace.append({"agent": agent, "prompt": rendered, "messages": raw.messages, "structured_output": raw.structured_output})
+    ctx.record_cost(
+        agent=agent,
+        model=raw.model,
+        input_tokens=raw.input_tokens,
+        output_tokens=raw.output_tokens,
+        usd=raw.usd,
+    )
+    ctx.trace.append(
+        {
+            "agent": agent,
+            "prompt": rendered,
+            "messages": raw.messages,
+            "structured_output": raw.structured_output,
+        }
+    )
     ctx.log("agent_end", agent=agent, model=raw.model, usd=raw.usd, duration_s=round(duration, 2))
 
     if raw.structured_output is None:

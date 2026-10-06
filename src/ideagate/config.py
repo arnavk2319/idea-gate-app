@@ -1,4 +1,5 @@
 """Typed loader for ideagate.yaml. Secrets come from the environment (.env)."""
+
 from __future__ import annotations
 
 import os
@@ -53,7 +54,9 @@ class RubricConfig(_Strict):
         missing = set(RUBRIC_COLUMNS) - set(self.weights)
         extra = set(self.weights) - set(RUBRIC_COLUMNS)
         if missing or extra:
-            raise ValueError(f"rubric.weights keys mismatch (missing={sorted(missing)}, extra={sorted(extra)})")
+            raise ValueError(
+                f"rubric.weights keys mismatch (missing={sorted(missing)}, extra={sorted(extra)})"
+            )
         if self.kill_max_score >= self.pursue_min_score:
             raise ValueError("kill_max_score must be below pursue_min_score")
         return self
@@ -119,7 +122,9 @@ def find_config_path(explicit: str | os.PathLike | None = None) -> Path:
     candidate = explicit or os.environ.get("IDEAGATE_CONFIG") or "ideagate.yaml"
     path = Path(candidate)
     if not path.exists():
-        raise ConfigError(f"Config not found at {path}. Copy ideagate.yaml.example to ideagate.yaml and edit it.")
+        raise ConfigError(
+            f"Config not found at {path}. Copy ideagate.yaml.example to ideagate.yaml and edit it."
+        )
     return path
 
 

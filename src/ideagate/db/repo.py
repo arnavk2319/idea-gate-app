@@ -1,8 +1,8 @@
 """Thin data-access layer. Everything the orchestrator and CLI need to persist or read."""
+
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 from sqlalchemy import func
 from sqlmodel import Session, SQLModel, create_engine, select
@@ -24,7 +24,9 @@ class Repo:
     # ---- ideas / runs ----
     def create_run(self, input_json: dict, parent_idea_id: int | None = None) -> Run:
         with self.session() as s:
-            idea = Idea(title=input_json["idea"][:80], one_liner=input_json["idea"], parent_idea_id=parent_idea_id)
+            idea = Idea(
+                title=input_json["idea"][:80], one_liner=input_json["idea"], parent_idea_id=parent_idea_id
+            )
             s.add(idea)
             s.commit()
             run = Run(idea_id=idea.id, input_json=input_json)
@@ -32,7 +34,7 @@ class Repo:
             s.commit()
             return run
 
-    def get_run(self, run_id: int) -> Optional[Run]:
+    def get_run(self, run_id: int) -> Run | None:
         with self.session() as s:
             return s.get(Run, run_id)
 
@@ -52,7 +54,7 @@ class Repo:
     def finish_run(self, run_id: int, status: str, error: str | None = None) -> Run:
         return self.update_run(run_id, status=status, finished_at=utcnow(), error=error)
 
-    def get_idea(self, idea_id: int) -> Optional[Idea]:
+    def get_idea(self, idea_id: int) -> Idea | None:
         with self.session() as s:
             return s.get(Idea, idea_id)
 
@@ -79,7 +81,7 @@ class Repo:
             s.commit()
             return sr
 
-    def get_stage_result(self, run_id: int, stage: str, status: str = "done") -> Optional[StageResult]:
+    def get_stage_result(self, run_id: int, stage: str, status: str = "done") -> StageResult | None:
         with self.session() as s:
             q = (
                 select(StageResult)
@@ -90,7 +92,9 @@ class Repo:
 
     def stage_results(self, run_id: int) -> list[StageResult]:
         with self.session() as s:
-            return list(s.exec(select(StageResult).where(StageResult.run_id == run_id).order_by(StageResult.id)))
+            return list(
+                s.exec(select(StageResult).where(StageResult.run_id == run_id).order_by(StageResult.id))
+            )
 
     # ---- costs ----
     def add_cost_event(self, **fields) -> CostEvent:
@@ -106,6 +110,8 @@ class Repo:
     def cost_by_stage(self, run_id: int) -> dict[str, float]:
         with self.session() as s:
             rows = s.exec(
-                select(CostEvent.stage, func.sum(CostEvent.usd)).where(CostEvent.run_id == run_id).group_by(CostEvent.stage)
+                select(CostEvent.stage, func.sum(CostEvent.usd))
+                .where(CostEvent.run_id == run_id)
+                .group_by(CostEvent.stage)
             )
             return {stage: float(total or 0.0) for stage, total in rows}

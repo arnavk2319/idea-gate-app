@@ -3,11 +3,12 @@
 LLM agents only ever run inside a stage. Resuming a run skips every stage that already has a
 'done' result and continues from the first one that does not.
 """
+
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from pydantic import BaseModel
 
@@ -66,7 +67,9 @@ class Orchestrator:
                 outputs[spec.name] = done.output_json
                 continue
 
-            ctx = RunContext(config=self.config, repo=self.repo, run_id=run_id, idea_id=run.idea_id, stage=spec.name)
+            ctx = RunContext(
+                config=self.config, repo=self.repo, run_id=run_id, idea_id=run.idea_id, stage=spec.name
+            )
             self.repo.update_run(run_id, current_stage=spec.name)
             ctx.log("stage_start")
             stage_input = spec.build_input(run.input_json, outputs)
@@ -75,9 +78,16 @@ class Orchestrator:
                 result = spec.output_model.model_validate(spec.run(stage_input, ctx))
             except Exception as exc:
                 self.repo.save_stage_result(
-                    run_id=run_id, stage=spec.name, status="failed", usd=ctx.usd, trace_json=ctx.trace,
-                    input_json=stage_input.model_dump(mode="json"), prompt_version=ctx.prompt_version, model=ctx.model,
-                    duration_s=time.monotonic() - start, output_json={"error": str(exc)},
+                    run_id=run_id,
+                    stage=spec.name,
+                    status="failed",
+                    usd=ctx.usd,
+                    trace_json=ctx.trace,
+                    input_json=stage_input.model_dump(mode="json"),
+                    prompt_version=ctx.prompt_version,
+                    model=ctx.model,
+                    duration_s=time.monotonic() - start,
+                    output_json={"error": str(exc)},
                 )
                 self.repo.finish_run(run_id, "failed", error=f"{spec.name}: {exc}")
                 ctx.log("stage_failed", error=str(exc))
@@ -85,15 +95,23 @@ class Orchestrator:
 
             duration = time.monotonic() - start
             self.repo.save_stage_result(
-                run_id=run_id, stage=spec.name, status="done", output_json=result.model_dump(mode="json"),
-                prompt_version=ctx.prompt_version, model=ctx.model, usd=ctx.usd, duration_s=duration,
-                input_json=stage_input.model_dump(mode="json"), trace_json=ctx.trace,
+                run_id=run_id,
+                stage=spec.name,
+                status="done",
+                output_json=result.model_dump(mode="json"),
+                prompt_version=ctx.prompt_version,
+                model=ctx.model,
+                usd=ctx.usd,
+                duration_s=duration,
+                input_json=stage_input.model_dump(mode="json"),
+                trace_json=ctx.trace,
             )
             outputs[spec.name] = result.model_dump(mode="json")
             self._after_stage(spec.name, result, run.idea_id)
             ctx.log("stage_done", usd=ctx.usd, duration_s=round(duration, 2))
 
-        # M1 ends after Stage 0, so the run is simply "completed". M3/M4 replace this with at_gate/killed/pursued.
+        # M1 ends after Stage 0, so the run is simply "completed".
+        # M3/M4 replace this with at_gate/killed/pursued.
         self.repo.update_run(run_id, current_stage=None)
         self.repo.finish_run(run_id, "completed")
         return run_id

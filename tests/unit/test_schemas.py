@@ -20,8 +20,16 @@ def test_excerpt_limit():
 
 
 def test_assumptions_bounds():
-    base = dict(title="t", one_liner="o", target_customer="c", job_to_be_done="j", current_workaround="w",
-                search_keywords=["k"], adjacent_markets=[], geography="global")
+    base = dict(
+        title="t",
+        one_liner="o",
+        target_customer="c",
+        job_to_be_done="j",
+        current_workaround="w",
+        search_keywords=["k"],
+        adjacent_markets=[],
+        geography="global",
+    )
     with pytest.raises(ValidationError):
         IdeaBriefCore(**base, riskiest_assumptions=["a", "b"])
     with pytest.raises(ValidationError):
