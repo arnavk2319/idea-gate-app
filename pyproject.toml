@@ -1,6 +1,6 @@
 [project]
 name = "ideagate"
-version = "0.0.3"
+version = "0.1.0"
 description = "Idea validation pipeline: proof of spending first, pre-sell second, build only after commitments."
 requires-python = ">=3.12"
 dependencies = [
